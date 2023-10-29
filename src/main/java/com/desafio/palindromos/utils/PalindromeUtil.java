@@ -41,7 +41,7 @@ public class PalindromeUtil {
 
 		while(currentEntry.length() >= 3) {
 			String last2Chars = getLast2Chars(currentEntry);
-			int lastIndex = currentEntry.lastIndexOf(last2Chars);
+			int lastIndex = this.findLastIndexFrom(currentEntry, last2Chars, 1);
 
 			if(lastIndex < 0) {
 				currentEntry = currentEntry.substring(1);
@@ -87,5 +87,16 @@ public class PalindromeUtil {
 		String secondChar = currentEntry.charAt(1) + "";
 
 		return secondChar + firstChar;
+	}
+	
+	private int findLastIndexFrom(String text, String subString, int index) {
+		text = text.substring(index);
+		int lastIndex = text.lastIndexOf(subString);
+		
+		if(lastIndex >= 0) {
+			lastIndex++;
+		}
+		
+		return lastIndex;
 	}
 }

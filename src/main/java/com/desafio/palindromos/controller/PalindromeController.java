@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.desafio.palindromos.controller.validator.MatrixValidator;
 import com.desafio.palindromos.dto.PalindromeRequestDTO;
+import com.desafio.palindromos.exception.InvalidMatrixException;
 import com.desafio.palindromos.service.PalindromeService;
 import com.desafio.palindromos.utils.Constants;
 
@@ -37,6 +39,10 @@ public class PalindromeController {
 	@PostMapping("/savePalindomes")
 	public PalindromeRequestDTO savePalindomes(
 			@RequestBody String matrix) {
+		
+		if(!MatrixValidator.isValid(matrix)) {
+			throw new InvalidMatrixException();
+		}
 		
 		return this.palindromeService.savePalindomes(matrix);
 	}

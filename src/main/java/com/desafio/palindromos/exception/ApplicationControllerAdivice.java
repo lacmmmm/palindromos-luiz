@@ -27,6 +27,12 @@ public class ApplicationControllerAdivice {
 				.toList();
     }
 	
+	@ExceptionHandler(InvalidMatrixException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public String handleInvalidMatrixErrors(InvalidMatrixException ex) {
+		return ex.getMessage();
+    }
+	
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String handleInternalError(Exception ex) {
