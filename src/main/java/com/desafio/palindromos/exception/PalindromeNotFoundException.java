@@ -4,7 +4,7 @@ public class PalindromeNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 	public PalindromeNotFoundException(String palindrome) {
-		super("Não foi encontrado nenhuma requisição com a palavra: " + palindrome);
+		super("Não foi encontrado nenhuma registro com a palavra: " + palindrome);
 	}
 	
 	public PalindromeNotFoundException() {

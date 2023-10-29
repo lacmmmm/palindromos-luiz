@@ -42,12 +42,18 @@ public class PalindromeService {
 
 	public List<PalindromeRequestDTO> findByWord(String palindromeWord){
 
-	 return this.palindromeRepository
+		  List<PalindromeRequestDTO> list = this.palindromeRepository
 				.findByWord(palindromeWord)
-				.map(palindromeList -> palindromeList.stream()
-						.map(
-								palindromeEntity -> this.palindromeRequestMapper.toDTO(palindromeEntity.getRequest())
-							).toList())
-				.orElseThrow(() -> new PalindromeNotFoundException(palindromeWord));
+				.stream()
+				.map(palindromeEntity -> this.palindromeRequestMapper.toDTO(palindromeEntity.getRequest()))
+				.toList();
+				
+		  if(!list.isEmpty()) {
+			  return list;
+		  }
+		  else {
+			  throw new PalindromeNotFoundException(palindromeWord);
+		  }
+		  
 	}
 }
