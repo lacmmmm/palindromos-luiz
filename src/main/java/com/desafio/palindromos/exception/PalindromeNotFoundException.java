@@ -1,14 +1,16 @@
 package com.desafio.palindromos.exception;
 
+import com.desafio.palindromos.utils.Constants;
+
 public class PalindromeNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 	public PalindromeNotFoundException(String palindrome) {
-		super("Não foi encontrado nenhuma registro com a palavra: " + palindrome);
+		super(Constants.ERROR_MSG_PALINDROME_NOT_FOUND + palindrome);
 	}
 	
 	public PalindromeNotFoundException() {
-		super("Não foi encontrado nenhum palíndromo na matriz informada");
+		super(Constants.ERROR_MSG_MATRIX_WITHOUT_PALINDROMES);
 	}
 
 }

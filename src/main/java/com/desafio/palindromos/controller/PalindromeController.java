@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.desafio.palindromos.dto.PalindromeRequestDTO;
 import com.desafio.palindromos.service.PalindromeService;
+import com.desafio.palindromos.utils.Constants;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -42,7 +43,7 @@ public class PalindromeController {
 
 	@GetMapping("/{palindrome}")
 	public List<PalindromeRequestDTO> findByWord(
-			@PathVariable("palindrome") @NotBlank @Size(min = 3, message = "o palindromo deve ter no mínimo 3 caracteres")String palindrome){
+			@PathVariable("palindrome") @NotBlank(message = Constants.ERROR_MSG_PALINDROME_NOT_BLANK) @Size(min = 3, message = Constants.ERROR_MSG_PALINDROME_MIN_SIZE)String palindrome){
 
 		return this.palindromeService.findByWord(palindrome);
 	}
