@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.desafio.palindromos.dto.PalindromeRequestDTO;
 import com.desafio.palindromos.dto.mapper.PalindromeRequestMapper;
+import com.desafio.palindromos.exception.PalindromeNotFoundException;
 import com.desafio.palindromos.model.Palindrome;
 import com.desafio.palindromos.model.PalindromeRequest;
 import com.desafio.palindromos.repository.PalindromeRepository;
@@ -19,28 +20,34 @@ import lombok.AllArgsConstructor;
 public class PalindromeService {
 	private RequestRepository requestRepository;
 	private PalindromeRepository palindromeRepository;
-	private PalindromeUtil palindromeUtil;
 	private PalindromeRequestMapper palindromeRequestMapper;
+	private PalindromeUtil palindromeUtil;
 
-	public PalindromeRequestDTO findPalindomes(String matrix) {
+	public PalindromeRequestDTO savePalindomes(String matrix) {
 		List<Palindrome> allPalindromes = this.palindromeUtil.getAllPalindromesFromMatrix(matrix);
 
-		PalindromeRequest request = new PalindromeRequest();
-
 		if(!allPalindromes.isEmpty()) {
+			PalindromeRequest request = new PalindromeRequest();
+			
 			allPalindromes.stream().forEach(palindrome -> palindrome.setRequest(request));
 			request.setPalindromes(allPalindromes);
+			
+			return this.palindromeRequestMapper.toDTO(this.requestRepository.save(request));
 		}
-
-		return this.palindromeRequestMapper.toDTO(this.requestRepository.save(request));
+		else {
+			throw new PalindromeNotFoundException();
+		}
+		
 	}
 
-	public List<PalindromeRequestDTO> findByWord(String palindrome){
+	public List<PalindromeRequestDTO> findByWord(String palindromeWord){
 
-		return this.palindromeRepository
-				.findByWord(palindrome)
-				.stream()
-				.map(p -> this.palindromeRequestMapper.toDTO(p.getRequest()) )
-				.toList();
+	 return this.palindromeRepository
+				.findByWord(palindromeWord)
+				.map(palindromeList -> palindromeList.stream()
+						.map(
+								palindromeEntity -> this.palindromeRequestMapper.toDTO(palindromeEntity.getRequest())
+							).toList())
+				.orElseThrow(() -> new PalindromeNotFoundException(palindromeWord));
 	}
 }
