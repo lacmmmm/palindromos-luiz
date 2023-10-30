@@ -45,19 +45,19 @@ public class PalindromeTestsHelper {
 			0 A 0
 			""";
 
-	public static PalindromeRequest getPalindromeRequestEntity(List<String> wordlist, PalindromeRequest emptyRequest){
+	public static PalindromeRequest getPalindromeRequestEntity(List<String> wordlist, PalindromeRequest request){
 		List<Palindrome> palindromesList = wordlist.stream()
 				.map(word -> {				
 					Palindrome palindrome = new Palindrome();
 					palindrome.setWord(word);
-					palindrome.setRequest(emptyRequest);
+					palindrome.setRequest(request);
 					return palindrome;
 				})
 				.toList();
 
-		emptyRequest.setPalindromes(palindromesList);
+		request.setPalindromes(palindromesList);
 
-		return emptyRequest;
+		return request;
 	}
 
 
