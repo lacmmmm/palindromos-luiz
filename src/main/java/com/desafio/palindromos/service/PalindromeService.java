@@ -21,10 +21,9 @@ public class PalindromeService {
 	private RequestRepository requestRepository;
 	private PalindromeRepository palindromeRepository;
 	private PalindromeRequestMapper palindromeRequestMapper;
-	private PalindromeUtil palindromeUtil;
 
 	public PalindromeRequestDTO savePalindomes(String matrix) {
-		List<Palindrome> allPalindromes = this.palindromeUtil.getAllPalindromesFromMatrix(matrix);
+		List<Palindrome> allPalindromes = PalindromeUtil.getAllPalindromesFromMatrix(matrix);
 
 		if(!allPalindromes.isEmpty()) {
 			PalindromeRequest request = new PalindromeRequest();
@@ -32,7 +31,8 @@ public class PalindromeService {
 			allPalindromes.stream().forEach(palindrome -> palindrome.setRequest(request));
 			request.setPalindromes(allPalindromes);
 			
-			return this.palindromeRequestMapper.toDTO(this.requestRepository.save(request));
+			PalindromeRequest entity = this.requestRepository.save(request);
+			return this.palindromeRequestMapper.toDTO(entity );
 		}
 		else {
 			throw new PalindromeNotFoundException();

@@ -10,7 +10,7 @@ import com.desafio.palindromos.model.Palindrome;
 @Component
 public class PalindromeUtil {
 
-	public List<Palindrome> getAllPalindromesFromMatrix(String matrix) {
+	public static List<Palindrome> getAllPalindromesFromMatrix(String matrix) {
 		MatrizUtil matrizUtil =  new MatrizUtil();
 		List<String> phrases = matrizUtil.getAllPhares(matrix);
 
@@ -36,12 +36,12 @@ public class PalindromeUtil {
 		return palindromesList;
 	}
 
-	private String getFirstPalindrome(String entry){
+	private static String getFirstPalindrome(String entry){
 		String currentEntry = entry;
 
 		while(currentEntry.length() >= 3) {
 			String last2Chars = getLast2Chars(currentEntry);
-			int lastIndex = this.findLastIndexFrom(currentEntry, last2Chars, 1);
+			int lastIndex = findLastIndexFrom(currentEntry, last2Chars, 1);
 
 			if(lastIndex < 0) {
 				currentEntry = currentEntry.substring(1);
@@ -64,7 +64,7 @@ public class PalindromeUtil {
 		return null;
 	}
 
-	private boolean isPalindrome(String word) {
+	private static boolean isPalindrome(String word) {
 
 		String nextInitialChar = word.charAt (0) + "";
 		String nextFinalChar = word.charAt (word.length() - 1) + "";
@@ -82,14 +82,14 @@ public class PalindromeUtil {
 		return false;
 	}
 
-	private String getLast2Chars(String currentEntry) {
+	private static String getLast2Chars(String currentEntry) {
 		String firstChar = currentEntry.charAt(0) + "";
 		String secondChar = currentEntry.charAt(1) + "";
 
 		return secondChar + firstChar;
 	}
 	
-	private int findLastIndexFrom(String text, String subString, int index) {
+	private static int findLastIndexFrom(String text, String subString, int index) {
 		text = text.substring(index);
 		int lastIndex = text.lastIndexOf(subString);
 		
