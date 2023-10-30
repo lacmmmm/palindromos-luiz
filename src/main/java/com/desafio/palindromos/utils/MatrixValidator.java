@@ -1,4 +1,4 @@
-package com.desafio.palindromos.controller.validator;
+package com.desafio.palindromos.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class MatrixValidator {
 	
 	private static boolean hasValidColumns(String[] rows) {
 		
-		if(!rows[0].contains(" ") && rows[0].length() > 1) {
+		if(!rows[0].trim().contains(" ")) {
 			return false;
 		}
 		

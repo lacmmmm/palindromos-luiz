@@ -1,8 +1,8 @@
 package com.desafio.palindromos.controller;
 
-import static com.desafio.palindromos.PalindromeTestsUtil.INVALID_MATRIX;
-import static com.desafio.palindromos.PalindromeTestsUtil.MATRIX_WITHOUT_3ROWS_OR_3COLUMNS;
-import static com.desafio.palindromos.PalindromeTestsUtil.MATRIX_WITH_EMPTY_CHAR;
+import static com.desafio.palindromos.helper.PalindromeTestsHelper.INVALID_MATRIX;
+import static com.desafio.palindromos.helper.PalindromeTestsHelper.MATRIX_WITHOUT_3ROWS_OR_3COLUMNS;
+import static com.desafio.palindromos.helper.PalindromeTestsHelper.MATRIX_WITH_EMPTY_CHAR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,8 +23,8 @@ import org.springframework.http.ResponseEntity;
 
 import com.desafio.palindromos.dto.PalindromeRequestDTO;
 import com.desafio.palindromos.exception.InvalidMatrixException;
+import com.desafio.palindromos.helper.ConstantsTest;
 import com.desafio.palindromos.service.PalindromeService;
-import com.desafio.palindromos.utils.Constants;
 
 @ExtendWith(MockitoExtension.class)
 class PalindromeControllerTest{
@@ -59,7 +59,7 @@ class PalindromeControllerTest{
 			controller.savePalindomes(matrix);
 		});
 
-		assertEquals(Constants.ERROR_MSG_INVALID_MATRIX, exception.getMessage());
+		assertEquals(ConstantsTest.ERROR_MSG_INVALID_MATRIX, exception.getMessage());
 	}
     
     @Test

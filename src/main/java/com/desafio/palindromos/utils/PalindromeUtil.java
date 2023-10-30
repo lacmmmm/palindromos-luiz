@@ -3,18 +3,26 @@ package com.desafio.palindromos.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import com.desafio.palindromos.model.Palindrome;
 
-@Component
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access= AccessLevel.PRIVATE)
 public class PalindromeUtil {
 
 	public static List<Palindrome> getAllPalindromesFromMatrix(String matrix) {
-		MatrizUtil matrizUtil =  new MatrizUtil();
-		List<String> phrases = matrizUtil.getAllPhares(matrix);
-
 		List<Palindrome> palindromesList = new ArrayList<>();
+		
+		if(!MatrixValidator.isValid(matrix)) {
+			return palindromesList;
+		}
+		
+		List<String> phrases = MatrixUtil.getAllPharesWithAtLeast3Chars(matrix);
+		
+		if(phrases.isEmpty()) {
+			return palindromesList;
+		}
 
 		for (String phrase : phrases) {
 			String phraseEntry = phrase;

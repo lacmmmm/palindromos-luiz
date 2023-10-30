@@ -8,22 +8,25 @@ import java.util.stream.Stream;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-public class MatrizUtil {
+@NoArgsConstructor(access= AccessLevel.PRIVATE)
+public class MatrixUtil {
 
-	protected List<String> getAllPhares(@NotBlank @NotNull String matrix) {
-		String[][] matrixArray = this.getMatriz(matrix);
-		List<String> lines = this.getLines(matrix);
-		List<String> columns = this.getColumns(matrixArray);
-		List<String> diagonalsFromLeft = this.getDiagonalsFromLeft(matrixArray);
-		List<String> diagonalsFromRight = this.getDiagonalsFromRight(matrixArray);
+	protected static List<String> getAllPharesWithAtLeast3Chars(@NotBlank @NotNull String matrix) {
+		String[][] matrixArray = getMatriz(matrix);
+		List<String> rows = getRows(matrix);
+		List<String> columns = getColumns(matrixArray);
+		List<String> diagonalsFromLeft = getDiagonalsFromLeft(matrixArray);
+		List<String> diagonalsFromRight = getDiagonalsFromRight(matrixArray);
 
-		return  Stream.of(lines, columns, diagonalsFromLeft, diagonalsFromRight)
+		return  Stream.of(rows, columns, diagonalsFromLeft, diagonalsFromRight)
 				.flatMap(Collection::stream)
 				.toList();
 	}
 
-	private String[][] getMatriz(String textLines) {
+	private static String[][] getMatriz(String textLines) {
 		String[] lines = textLines.split("\n");
 
 		int qtLines = lines.length;
@@ -38,14 +41,15 @@ public class MatrizUtil {
 		return matrix;
 	}
 
-	private List<String> getLines(String textLines) {
+	private static List<String> getRows(String textLines) {
 		String[] lines = textLines.split("\n");
 		return List.of(lines).stream()
 				.map(line -> line.replace(" ", "").trim())
+				.filter(line -> line.length() > 2)
 				.toList();
 	}
 
-	private List<String> getColumns(String[][] matrix) {
+	private static List<String> getColumns(String[][] matrix) {
 		String[] retorno = new String[matrix[0].length];
 		Arrays.fill(retorno, "");
 
@@ -55,10 +59,10 @@ public class MatrizUtil {
 			}
 		}
 
-		return List.of(retorno);
+		return List.of(retorno).stream().filter(column -> column.length() > 2).toList();
 	}
 
-	private List<String> getDiagonalsFromLeft(String[][] matrix) {
+	private static List<String> getDiagonalsFromLeft(String[][] matrix) {
 		ArrayList<String> retorno = new ArrayList<>();
 		int qtLines = matrix.length;
 		int qtCols = matrix[0].length;
@@ -68,7 +72,7 @@ public class MatrizUtil {
 		int initialLine = 0;
 		int column;
 
-		while (initialLine < qtLines-3) {
+		while (initialLine <= qtLines-3 && initialLine < qtLines && initialColumn < qtCols) {
 
 			if( initialColumn < 0) {
 				column = 0;
@@ -86,13 +90,15 @@ public class MatrizUtil {
 				diagonal += matrix[line++][column++];
 			}
 
-			retorno.add(diagonal);
+			if(diagonal.length() > 2) {
+				retorno.add(diagonal);
+			}
 		}
 
 		return retorno;
 	}
 
-	private List<String> getDiagonalsFromRight(String[][] matrix) {
+	private static List<String> getDiagonalsFromRight(String[][] matrix) {
 		ArrayList<String> retorno = new ArrayList<>();
 		int qtLines = matrix.length;
 		int qtCols = matrix[0].length;
@@ -102,9 +108,9 @@ public class MatrizUtil {
 		int initialLine = 0;
 		int column;
 
-		while (initialLine < qtLines-3) {
+		while (initialLine <= qtLines-3 && initialLine < qtLines) {
 
-			if( initialColumn == qtCols) {
+			if( initialColumn >= qtCols) {
 				column = qtCols-1;
 				initialLine++;
 			}
@@ -119,10 +125,23 @@ public class MatrizUtil {
 				diagonal += matrix[line++][column--];
 			}
 
-			retorno.add(diagonal);
+			if(diagonal.length() > 2) {
+				retorno.add(diagonal);
+			}
 		}
-		
+
 		return retorno;
+	}
+
+	public static void main(String[] args) {
+		String VALID_MATRIX_WITH_MORE_ROWS_THAN_COLUMNS = """
+				0 A 9
+				1 B 6
+				2 C 3
+				3 D 5
+				""";
+		String[][] matrixArray = getMatriz(VALID_MATRIX_WITH_MORE_ROWS_THAN_COLUMNS);
+		System.out.println(getDiagonalsFromRight(matrixArray));
 	}
 
 }

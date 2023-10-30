@@ -16,10 +16,11 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.desafio.palindromos.PalindromeTestsUtil;
 import com.desafio.palindromos.dto.PalindromeRequestDTO;
 import com.desafio.palindromos.dto.mapper.PalindromeRequestMapper;
 import com.desafio.palindromos.exception.PalindromeNotFoundException;
+import com.desafio.palindromos.helper.ConstantsTest;
+import com.desafio.palindromos.helper.PalindromeTestsHelper;
 import com.desafio.palindromos.model.Palindrome;
 import com.desafio.palindromos.model.PalindromeRequest;
 import com.desafio.palindromos.repository.PalindromeRepository;
@@ -46,7 +47,7 @@ class PalindromeServieTest{
 
 		PalindromeRequest palindromeRequest = new PalindromeRequest();
 		palindromeRequest.setId(1l);
-		PalindromeRequest palindromeRequestList = PalindromeTestsUtil.getPalindromeRequestEntity(wordList, palindromeRequest);
+		PalindromeRequest palindromeRequestList = PalindromeTestsHelper.getPalindromeRequestEntity(wordList, palindromeRequest);
 
 		String validMatrix = "a a a b b b";
 
@@ -65,23 +66,22 @@ class PalindromeServieTest{
 			this.service.savePalindomes("a a c");
 		});
 
-		final String ERROR_MSG_MATRIX_WITHOUT_PALINDROMES = "Não foi encontrado nenhum palíndromo na matriz informada";
-		assertEquals(ERROR_MSG_MATRIX_WITHOUT_PALINDROMES, exception.getMessage());
+		assertEquals(ConstantsTest.ERROR_MSG_MATRIX_WITHOUT_PALINDROMES, exception.getMessage());
 	}
 
 
 	@Test
 	void findByWordStoredInDBShouldReturnPalindromeRequestDTO(){
 		List<String> wordList1 = List.of("aaa", "bbb", "ccc");
-		List<String> wordList2 = List.of("aaa", "111", "222");
+		List<String> wordList2 = List.of("aaa", "111", "222", "333");
 
 		PalindromeRequest palindromeRequest1 = new PalindromeRequest();
 		palindromeRequest1.setId(1l);
-		palindromeRequest1 = PalindromeTestsUtil.getPalindromeRequestEntity(wordList1, palindromeRequest1);
+		palindromeRequest1 = PalindromeTestsHelper.getPalindromeRequestEntity(wordList1, palindromeRequest1);
 
 		PalindromeRequest palindromeRequest2 = new PalindromeRequest();
 		palindromeRequest2.setId(2l);
-		palindromeRequest2 = PalindromeTestsUtil.getPalindromeRequestEntity(wordList2, palindromeRequest2);
+		palindromeRequest2 = PalindromeTestsHelper.getPalindromeRequestEntity(wordList2, palindromeRequest2);
 
 		List<Palindrome> palindromeRequestList = List.of(palindromeRequest1.getPalindromes().get(0), palindromeRequest2.getPalindromes().get(0));
 
@@ -99,10 +99,11 @@ class PalindromeServieTest{
 		assertEquals("ccc", result.get(0).palindrimes().get(2));
 		
 		assertEquals(2l, result.get(1).id());
-		assertEquals(3, result.get(1).palindrimes().size());
+		assertEquals(4, result.get(1).palindrimes().size());
 		assertEquals("aaa", result.get(1).palindrimes().get(0));
 		assertEquals("111", result.get(1).palindrimes().get(1));
 		assertEquals("222", result.get(1).palindrimes().get(2));
+		assertEquals("333", result.get(1).palindrimes().get(3));
 	}
 	
 	@Test
@@ -112,7 +113,7 @@ class PalindromeServieTest{
 			this.service.findByWord(word);
 		});
 
-		final String ERROR_MSG_PALINDROME_NOT_FOUND = "Não foi encontrado nenhuma registro com a palavra: " + word;
-		assertEquals(ERROR_MSG_PALINDROME_NOT_FOUND, exception.getMessage());
+		final String expectedMsg = ConstantsTest.ERROR_MSG_PALINDROME_NOT_FOUND + word;
+		assertEquals(expectedMsg, exception.getMessage());
 	}
 }

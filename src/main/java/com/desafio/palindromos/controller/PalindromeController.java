@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.desafio.palindromos.controller.validator.MatrixValidator;
 import com.desafio.palindromos.dto.PalindromeRequestDTO;
 import com.desafio.palindromos.exception.InvalidMatrixException;
 import com.desafio.palindromos.service.PalindromeService;
 import com.desafio.palindromos.utils.Constants;
+import com.desafio.palindromos.utils.MatrixValidator;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,12 +29,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PalindromeController {
 	private PalindromeService palindromeService;
-
-	@GetMapping("/hello")
-	public String hello() {
-
-		return "Hello";
-	}
 
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping(path = "/savePalindomes", consumes = "text/plain")
