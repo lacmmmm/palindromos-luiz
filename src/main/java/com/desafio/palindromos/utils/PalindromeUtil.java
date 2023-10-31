@@ -62,7 +62,7 @@ public class PalindromeUtil {
 					return word;
 				}
 				else {
-					lastIndex = currentEntry.substring(0, lastIndex - 2).lastIndexOf(last2Chars);
+					lastIndex = currentEntry.substring(0, lastIndex - 1).lastIndexOf(last2Chars);
 					if(lastIndex < 0) {
 						currentEntry = currentEntry.substring(1);
 					}

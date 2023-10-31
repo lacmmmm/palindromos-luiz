@@ -26,8 +26,6 @@ public class Palindrome {
 	@JsonIgnore
 	private Long id;
 
-	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	//@ManyToOne(fetch = FetchType.EAGER , optional = false)
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "request_id", nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
